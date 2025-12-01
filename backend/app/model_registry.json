@@ -1,0 +1,100 @@
+{
+  "1f34b867-f3f4-4f10-a78a-7fd39aa4df6d": {
+    "modelId": "1f34b867-f3f4-4f10-a78a-7fd39aa4df6d",
+    "name": "bank model",
+    "description": "bank model with a bank dataset",
+    "createdAt": "2025-12-01T19:03:59.188403",
+    "problemType": "classification",
+    "algorithm": "Naive Bayes",
+    "metrics": {
+      "accuracy": 0.8795580110497238,
+      "precision": 0.816431323506113,
+      "recall": 0.8795580110497238,
+      "f1Score": 0.8341617154069031,
+      "rocAuc": 0.6068196004993758
+    },
+    "inputColumns": [
+      "age",
+      "job",
+      "education",
+      "balance"
+    ],
+    "outputColumn": "y",
+    "usage": {
+      "totalCalls": 1,
+      "uniqueUsers": [
+        "khaoula"
+      ],
+      "lastUsed": "2025-12-01T19:05:26.168506"
+    },
+    "resourceMonitoring": [
+      {
+        "timestamp": "2025-12-01T19:05:26.168506",
+        "cpuPercent": 28.3,
+        "memoryMB": 157.703125,
+        "latencyMs": 9.269237518310547
+      }
+    ],
+    "performanceHistory": [
+      {
+        "timestamp": "2025-12-01T19:03:59.188403",
+        "metrics": {
+          "accuracy": 0.8795580110497238,
+          "precision": 0.816431323506113,
+          "recall": 0.8795580110497238,
+          "f1Score": 0.8341617154069031,
+          "rocAuc": 0.6068196004993758
+        }
+      }
+    ]
+  },
+  "1ccadab8-1f33-42c1-8a9a-bf45c3a798f9": {
+    "modelId": "1ccadab8-1f33-42c1-8a9a-bf45c3a798f9",
+    "name": "credit risk",
+    "description": "credit risk model",
+    "createdAt": "2025-12-01T19:09:43.745703",
+    "problemType": "regression",
+    "algorithm": "Random Forest",
+    "metrics": {
+      "r2Score": 0.44848713557227593,
+      "meanSquaredError": 0.09517158388824432,
+      "meanAbsoluteError": 0.18431072031390433,
+      "rootMeanSquaredError": 0.30849892040045185,
+      "meanSquaredLogError": 0.04747297163255662
+    },
+    "inputColumns": [
+      "Age",
+      "Income",
+      "Amount",
+      "Rate"
+    ],
+    "outputColumn": "Status",
+    "usage": {
+      "totalCalls": 1,
+      "uniqueUsers": [
+        "khaoula"
+      ],
+      "lastUsed": "2025-12-01T19:12:29.654729"
+    },
+    "resourceMonitoring": [
+      {
+        "timestamp": "2025-12-01T19:12:29.654729",
+        "cpuPercent": 28.9,
+        "memoryMB": 196.40625,
+        "latencyMs": 296.7517375946045
+      }
+    ],
+    "performanceHistory": [
+      {
+        "timestamp": "2025-12-01T19:09:43.745703",
+        "metrics": {
+          "r2Score": 0.44848713557227593,
+          "meanSquaredError": 0.09517158388824432,
+          "meanAbsoluteError": 0.18431072031390433,
+          "rootMeanSquaredError": 0.30849892040045185,
+          "meanSquaredLogError": 0.04747297163255662
+        }
+      }
+    ]
+  }
+}

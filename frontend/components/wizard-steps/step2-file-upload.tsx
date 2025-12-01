@@ -41,13 +41,13 @@ export default function Step2FileUpload({ data, onUpdate, onNext, onPrevious }: 
         try {
           const uploadData = await apiClient.uploadCSV(file)
           console.log("File uploaded successfully, uploadId:", uploadData.uploadId)
-          
-          onUpdate({
-            csvFile: file,
-            csvData: results.data.filter((row) => Object.values(row as any).some((val) => val !== "")),
-            csvColumns: columns,
+
+        onUpdate({
+          csvFile: file,
+          csvData: results.data.filter((row) => Object.values(row as any).some((val) => val !== "")),
+          csvColumns: columns,
             uploadId: uploadData.uploadId,
-          })
+        })
         } catch (error) {
           console.error("Error uploading file:", error)
           alert("Error uploading file to server: " + (error instanceof Error ? error.message : "Unknown error"))

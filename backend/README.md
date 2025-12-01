@@ -43,6 +43,15 @@ L'application vise à **démocratiser l'accès au machine learning** en offrant 
    - Sauvegarde du modèle entraîné
    - Endpoint REST pour faire des prédictions
    - Documentation de l'API incluse
+   - Encodage automatique des variables catégorielles lors des prédictions
+
+6. **Gestion et Monitoring des Modèles** :
+   - Historique complet de tous les modèles créés
+   - Visualisation détaillée des métriques et statistiques
+   - Graphiques de performance dans le temps
+   - Monitoring des ressources (CPU, RAM, latence)
+   - Statistiques d'utilisation (nombre d'appels API, utilisateurs uniques)
+   - Suppression de modèles avec confirmation
 
 ### Architecture
 
@@ -126,13 +135,79 @@ Response: {
 POST /api/predict
 Body: {
   "modelId": "string",
-  "features": { "col1": value1, "col2": value2, ... }
+  "features": { "col1": value1, "col2": value2, ... },
+  "userId": "string" (optionnel)
+}
+Response: {
+  "prediction": number,
+  "probabilities": [number, ...] (pour classification),
+  "algorithm": "string",
+  "problemType": "classification" | "regression",
+  "latencyMs": number,
+  "cpuPercent": number,
+  "memoryMB": number
 }
 ```
+
+**Note importante** : Les variables catégorielles doivent être envoyées avec leurs valeurs originales (ex: "management", "tertiary"). Le système les encode automatiquement avec le même LabelEncoder utilisé lors de l'entraînement.
 
 ### 5. Obtenir les informations d'un modèle
 ```
 GET /api/models/{model_id}
+Response: {
+  "modelId": "string",
+  "name": "string",
+  "description": "string",
+  "createdAt": "ISO datetime",
+  "problemType": "classification" | "regression",
+  "algorithm": "string",
+  "metrics": { ... },
+  "inputColumns": ["col1", "col2", ...],
+  "outputColumn": "string",
+  "usage": {
+    "totalCalls": number,
+    "uniqueUsers": ["user1", ...],
+    "lastUsed": "ISO datetime"
+  },
+  "summary": {
+    "totalCalls": number,
+    "uniqueUsersCount": number,
+    "lastUsed": "ISO datetime",
+    "avgCpuPercent": number,
+    "maxMemoryMB": number
+  },
+  "resourceMonitoring": [
+    {
+      "timestamp": "ISO datetime",
+      "cpuPercent": number,
+      "memoryMB": number,
+      "latencyMs": number
+    },
+    ...
+  ],
+  "performanceHistory": [
+    {
+      "timestamp": "ISO datetime",
+      "metrics": { ... }
+    },
+    ...
+  ]
+}
+```
+
+### 6. Lister tous les modèles
+```
+GET /api/models
+Response: [ { model1 }, { model2 }, ... ]
+```
+
+### 7. Supprimer un modèle
+```
+DELETE /api/models/{model_id}
+Response: {
+  "status": "deleted",
+  "modelId": "string"
+}
 ```
 
 ## Algorithmes implémentés
@@ -175,10 +250,54 @@ backend/
 └── README.md
 ```
 
+## Fonctionnalités Avancées
+
+### Interface Utilisateur
+
+- **Historique des Modèles** : Sidebar affichant tous les modèles créés avec leurs métriques principales
+- **Boutons d'Action** :
+  - 👁️ **Voir les détails** : Ouvre une modal complète avec toutes les statistiques et graphiques
+  - 🗑️ **Supprimer** : Supprime un modèle avec confirmation
+- **Modal de Détails** : Affiche :
+  - Informations de base (nom, description, type, algorithme)
+  - Statistiques d'utilisation (appels API, utilisateurs uniques, dernière utilisation)
+  - Métriques du modèle (accuracy, precision, recall, F1, etc.)
+  - Graphique de performance dans le temps
+  - Monitoring des ressources (CPU moyen, RAM max)
+  - Graphique CPU & RAM dans le temps
+  - Informations sur l'endpoint API avec exemple de requête
+
+### Préprocessing Automatique des Prédictions
+
+Le système gère automatiquement :
+- **Encodage des variables catégorielles** : Les valeurs catégorielles (ex: "management", "tertiary") sont automatiquement encodées avec le même LabelEncoder utilisé lors de l'entraînement
+- **Normalisation des features** : Les données sont normalisées avec le même StandardScaler
+- **Validation des valeurs** : Vérification que les valeurs catégorielles existent dans les données d'entraînement
+- **Messages d'erreur clairs** : Indique les valeurs valides si une erreur survient
+
+### Suivi et Monitoring
+
+Chaque appel à l'API de prédiction enregistre automatiquement :
+- Nombre total d'appels
+- Utilisateurs uniques (via `userId`)
+- Dernière utilisation
+- Métriques de ressources (CPU, RAM, latence) à chaque appel
+- Historique complet pour visualisation dans les graphiques
+
+## Documentation API
+
+Un guide complet de test de l'API est disponible dans `API_TESTING_GUIDE.md` avec :
+- Exemples avec cURL, Python, JavaScript, Postman
+- Structure des requêtes
+- Gestion des erreurs
+- Scripts de test complets
+
 ## Notes
 
 - Les fichiers CSV sont stockés dans `app/uploads/`
 - Les modèles entraînés sont sauvegardés dans `app/models/` au format `.joblib`
+- Le registre des modèles est stocké dans `app/model_registry.json`
 - Le système sélectionne automatiquement le meilleur algorithme basé sur les métriques de performance
 - Une justification est fournie pour expliquer pourquoi un algorithme a été choisi
+- **Important** : Les modèles créés avant la mise à jour de l'encodage doivent être recréés pour supporter les variables catégorielles dans les prédictions
 

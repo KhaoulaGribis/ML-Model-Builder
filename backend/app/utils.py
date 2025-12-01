@@ -11,7 +11,7 @@ def preprocess_data(
     input_columns: List[str],
     output_column: str,
     problem_type: str
-) -> Tuple[pd.DataFrame, pd.Series, pd.DataFrame, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.Series, pd.DataFrame, pd.Series, Dict[str, Any], Any]:
     """
     Preprocess the data for machine learning.
     Returns X_train, X_test, y_train, y_test
@@ -153,7 +153,7 @@ def preprocess_data(
     if not isinstance(y_test, pd.Series):
         y_test = pd.Series(y_test)
     
-    return X_train, X_test, y_train, y_test
+    return X_train, X_test, y_train, y_test, label_encoders, scaler
 
 
 def calculate_metrics_classification(y_true, y_pred, y_pred_proba=None) -> Dict[str, float]:

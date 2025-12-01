@@ -35,14 +35,18 @@ export default function Step5AlgorithmResults({ data, onUpdate, onPrevious, onCl
           uploadId: data.uploadId,
           problemType: data.problemType,
           inputColumns: data.inputColumns,
-          outputColumn: data.outputColumn
+          outputColumn: data.outputColumn,
+          modelName: data.modelName,
+          modelDescription: data.modelDescription,
         })
-        
+
         const analysisData = await apiClient.analyzeData(
           data.uploadId,
           data.problemType as string,
           data.inputColumns,
           data.outputColumn,
+          data.modelName,
+          data.modelDescription,
         )
         console.log("Analysis complete:", analysisData)
         setResults(analysisData)

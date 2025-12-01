@@ -61,6 +61,15 @@ Un processus en 5 étapes pour créer un modèle :
 - Sauvegarde du modèle entraîné (format .joblib)
 - Endpoint REST pour faire des prédictions
 - Documentation de l'API incluse dans l'interface
+- Encodage automatique des variables catégorielles lors des prédictions
+
+#### 6. Gestion et Monitoring des Modèles
+- **Historique complet** : Sidebar affichant tous les modèles créés
+- **Visualisation détaillée** : Modal avec toutes les statistiques et graphiques
+- **Monitoring en temps réel** : CPU, RAM, latence pour chaque prédiction
+- **Statistiques d'utilisation** : Nombre d'appels API, utilisateurs uniques, dernière utilisation
+- **Graphiques de performance** : Évolution des métriques et ressources dans le temps
+- **Suppression de modèles** : Gestion complète avec confirmation
 
 ## 🏗️ Architecture
 
@@ -130,6 +139,7 @@ npm run dev  # ou pnpm dev
 - [Guide de Configuration](SETUP.md) - Instructions détaillées de configuration
 - [Backend README](backend/README.md) - Documentation de l'API backend
 - [Comment ça fonctionne](backend/HOW_IT_WORKS.md) - Explication détaillée du système
+- [Guide de Test de l'API](backend/API_TESTING_GUIDE.md) - Guide complet pour tester l'API avec exemples
 
 ## 🎯 Cas d'Usage
 
@@ -173,8 +183,10 @@ npm run dev  # ou pnpm dev
 
 - Les fichiers CSV sont stockés dans `backend/app/uploads/`
 - Les modèles entraînés sont sauvegardés dans `backend/app/models/`
+- Le registre des modèles est stocké dans `backend/app/model_registry.json`
 - Le système sélectionne automatiquement le meilleur algorithme
 - Une justification est fournie pour expliquer le choix de l'algorithme
+- **Important** : Les modèles créés avant la mise à jour de l'encodage doivent être recréés pour supporter les variables catégorielles dans les prédictions
 
 ## 🤝 Contribution
 
